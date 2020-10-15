@@ -2,7 +2,7 @@ import pika, sys, os, json
 import re
 import requests
 import pandas as pd
-from time import time
+import time
 from bs4 import BeautifulSoup
 
 from crawl import CrawlHTML
@@ -12,7 +12,8 @@ QUEUE_NAME = "crawled_chotot"
 
 
 def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost',heartbeat=600,
+                                       blocked_connection_timeout=300))
     channel = connection.channel()
 
     channel.queue_declare(queue=QUEUE_NAME)
@@ -20,6 +21,8 @@ def main():
     def callback(ch, method, properties, body):
         queue = json.loads(body)
         print(" [x] Received %r" % queue)
+        # mess = json.loads(body)
+        # print(" [x] Received %r" % mess)
         # count_link = 1
         # for idx in mess:
         #     url = mess[idx]
@@ -65,7 +68,7 @@ def main():
         #             if link not in urls_put and 'chotot' in link: 
         #                 page_links.append(link)
         #                 urls_put.append(link)
-
+        #         print("PAGE:", len(page_links))
         #         all_links = all_links + page_links
         #         temp = all_links[:]
                 
@@ -87,14 +90,13 @@ def main():
         #     count_link += 1
         #     result_df.to_csv(str(count_link) + '.csv')
         #     print('----- DONE: ', count_link)
-        crawl = CrawlHTML(queue)
+        crawl = CrawlHTML(list(queue.values()))
         crawl.main()
         crawl.save_tocsv()
 
-
-    channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
-
+    channel.basic_consume(queue=QUEUE_NAME, on_message_callback=callback, auto_ack=True)
     print(' [*] Waiting for messages. To exit press CTRL+C')
+
     channel.start_consuming()
 
 if __name__ == '__main__':
@@ -103,6 +105,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print('Interrupted')
         try:
+            #channel.stop_consuming()
             sys.exit(0)
         except SystemExit:
             os._exit(0)
