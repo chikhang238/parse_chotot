@@ -1,5 +1,5 @@
 # Crawling HTML of chotot.com
-This code is only used for crawling HTML of chotot and simulating a mouse to click to a button that is required to show a phone number.
+This code is only used for crawling HTML of chotot by using webdriver, bs4 and rabbitmq and simulating a mouse to click to a button that is required to show a phone number.
 
 ## Pre-conditions:
 - Install Python 3, pip
