@@ -19,8 +19,8 @@ pip install requirements.txt
 python worker.py
 ```
 
-- You can control the number of urls you would like to crawl by modifying NUM_URLS in line 50.
-- Otherwise, you can comment lines 162-163 for unlimited number of urls.
+- You can control the number of urls you would like to crawl by modifying NUM_URLS in line 50 of crawl.py.
+- Otherwise, you can comment lines 162-163 (crawl.py) for unlimited number of urls.
 - Then run send to send links to queue:
 ```bash
 python send.py
