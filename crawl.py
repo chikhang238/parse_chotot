@@ -21,7 +21,9 @@ CHOTOT = "chotot"
 HTM = "htm"
 # NHATTAO = "threads"
 # MUABAN = "id"
-NUM_URLS = 30
+NUM_URLS = 100
+SAVE_TO_ES = False # if you would like to save to ES, modify it to True
+GECKODRIVER = '/home/chikhang/Downloads/geckodriver' # Change to your geckodriver path (download from internet)
 
 
 class CrawlHTML(object):
@@ -62,14 +64,21 @@ class CrawlHTML(object):
         """
         Check whether an url is post url (the last level url) or not
         """
-        #print("consider:", url)
+        #print("** Consider:", url)
         if HTM in url and self.check_url(url):
+            # Remove unnecessary fragment part after hash (#) sign such as: 
+            # https://xe.chotot.com/tp-ho-chi-minh/quan-tan-phu/mua-ban-xe-may/
+            # 70898752.htm#px=SR-stickyad-[PO-5][PL-top]
+            match = re.search('(.)+htm', url)
+            url = match.group()
+
             if url not in self.result:
                 pagesrc = self.get_html(url)
                 if pagesrc is not None:   
                     self.result.append(url)
                     self.html.append(pagesrc)
-                    self.save_to_elasticsearch(url, pagesrc)
+                    if SAVE_TO_ES:
+                        self.save_to_elasticsearch(url, pagesrc)
                     self.post_count = self.post_count + 1
                     print("Post link number:", self.post_count)
         else:
@@ -113,7 +122,7 @@ class CrawlHTML(object):
         """
         options = Options()
         options.add_argument("--headless")
-        self.driver = webdriver.Firefox(executable_path='/home/chikhang/Downloads/geckodriver', options=options)
+        self.driver = webdriver.Firefox(executable_path=GECKODRIVER, options=options)
         
         # Loop through queue
         for url in self.queue:
