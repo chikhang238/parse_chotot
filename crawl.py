@@ -11,6 +11,7 @@ from selenium import webdriver
 from datetime import datetime
 from urllib.parse import urlsplit
 from urllib.parse import urlparse
+from urllib.parse import urljoin
 from elasticsearch import Elasticsearch
 from selenium.webdriver.firefox.options import Options
 
@@ -18,7 +19,9 @@ TIMEOUT = 30
 BASE_URL = "https://chotot.com"
 CHOTOT = "chotot"
 HTM = "htm"
-NUM_URLS = 50
+# NHATTAO = "threads"
+# MUABAN = "id"
+NUM_URLS = 30
 
 
 class CrawlHTML(object):
@@ -136,15 +139,19 @@ class CrawlHTML(object):
             local_urls = []
             for link in soup.find_all('a'):    
                 # extract link url from the anchor    
-                anchor = link.attrs["href"] if "href" in link.attrs else ''
-                if anchor.startswith('/'):        
-                    local_link = base_url + anchor        
-                    local_urls.append(local_link)    
-                elif strip_base in anchor:        
-                    local_urls.append(anchor)    
-                elif not anchor.startswith('http'):        
-                    local_link = path + anchor        
-                    local_urls.append(local_link)    
+                # anchor = link.attrs["href"] if "href" in link.attrs else ''
+                # if anchor.startswith('/'):        
+                #     local_link = base_url + anchor        
+                #     local_urls.append(local_link)    
+                # elif strip_base in anchor:        
+                #     local_urls.append(anchor)    
+                # elif not anchor.startswith('http'):        
+                #     local_link = path + anchor        
+                #     local_urls.append(local_link)    
+                anchor = str(link.get('href'))
+                local_link = urljoin(url, anchor)
+                if strip_base in local_link:
+                    local_urls.append(local_link)
 
             # Loop through the document to check post url
             print("Number of links which are retreived from url:", len(local_urls))
