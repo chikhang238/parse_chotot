@@ -1,0 +1,10 @@
+ID,features,pos_take,regex_take,regex_take_bool,pos_take_regex
+title,//h1[@class='adTilte___3UqYW' and @itemprop='name'],0,,0,
+price,//span[@itemprop='price'],0,,0,
+description,//p[@style=’white-space: pre-line,’],0,,0
+phone,//strong,0,,0,
+name,//span[@class='name'],0,,0,
+address,"//div[contains(text(), 'Địa chỉ:')]/span",0,,0,
+region,//a[@property='item']/span,1,,0,
+category,//a[@property='item']/span,3,,0,
+post_time,//div[@class='imageCaption___cMU2J’]/span,,,0,

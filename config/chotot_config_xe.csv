@@ -1,0 +1,10 @@
+ID,features,pos_take,regex_take,regex_take_bool,pos_take_regex
+title,//h1[@class='styles__Title-sc-14jh840-1 lgidFF' and @itemprop='name'],0,,0,
+price,//span[@class='styles__Price-sc-14jh840-4 jBNDPj' and @itemprop='price'],0,,0,
+description,//p[@class='styles__DescriptionAd-sc-14jh840-7 iHuKsX' and @itemprop='description'],0,,0,
+phone,//strong,0,,0,
+name,//div[@class='styles__NameDiv-jjbnsh-3 bWjZeW']/b,0,,0,
+address,"//div[contains(text(), 'Địa chỉ:')]/span",0,,0,
+region,,,,0,
+category,,,,0,
+post_time,//div[@class='styles__ImageCaption-sc-1r1xial-8 bTfnzd']/span/text(),,,0,
